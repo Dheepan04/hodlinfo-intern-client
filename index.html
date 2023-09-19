@@ -10,151 +10,216 @@
         integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
     <link rel="stylesheet" href="./styles.css">
 </head>
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        let previousValue = null;
-        let savingsRupees = 0;
-        const darkModeToggle = document.getElementById('darkModeToggle');
-  const body = document.body;
-
-  darkModeToggle.addEventListener('change', () => {
-    if (darkModeToggle.checked) {
-      body.classList.add('dark-mode');
-      body.classList.remove('light-mode');
-    } else {
-      body.classList.add('light-mode');
-      body.classList.remove('dark-mode');
-    }
-  });
-        fetch('http://localhost:3001') // Replace '/api/data' with your actual backend API endpoint
-            .then(response => response.json())
-            .then(data => {
-                // Process the fetched data
-                console.log(data);
-                data.data.sort((a, b) => {
-                const differenceA = previousValue
-                    ? (((a.last - previousValue) / previousValue) * 100)
-                    : 0;
-                const differenceB = previousValue
-                    ? (((b.last - previousValue) / previousValue) * 100)
-                    : 0;
-                return differenceB - differenceA; // Sort in descending order
-            });
-
-                data.data.slice(0, 10).forEach((item, index) => {
-                    const tableBody = document.getElementsByClassName('table-body')[0];
-                    const a = document.createElement('a');
-                    a.setAttribute('value', item.base_unit);
-                    a.setAttribute('tabindex', '0');
-                    a.setAttribute('role', 'menuitem');
-                    a.setAttribute('href', '/');
-                    a.classList.add("dropdown-item");
-                    a.textContent = item.base_unit.toUpperCase();
-                    const nameDropDown = document.getElementById('nameDropDown');
-                    nameDropDown.appendChild(a);
-
-                    const row=document.createElement('tr');
-
-                    const s_no=document.createElement('td');
-                    const h4_s_no=document.createElement('h4');
-                    h4_s_no.classList.add("table-text");
-                    s_no.classList.add("align-middle");
-                    s_no.textContent=index+1;
-                    s_no.appendChild(h4_s_no);
-                    row.appendChild(s_no);
-
-                    const span=document.createElement('span');
-                    const name = document.createElement('td');
-                    const h4_name=document.createElement('h4');
-                    span.textContent=item.name;
-                    h4_name.appendChild(span);
-                    h4_name.classList.add('table-text');
-                    name.appendChild(h4_name);
-                    name.classList.add('align-middle');
-                    row.appendChild(name);
-                    
-                    const last = document.createElement('td');
-                    const h4=document.createElement('h4');
-                    h4.textContent= '₹ ' + item.last;
-                    h4.classList.add('table-text');
-                    last.appendChild(h4);
-                    last.classList.add('align-middle');
-                    row.appendChild(last);
-                    
-                    const buy_sell = document.createElement('td');
-                    const h4_buy_sell = document.createElement('h4');
-                    const span_buy_sell=document.createElement('span');
-                    span_buy_sell.textContent='₹ ' + item.buy + ' / ₹ ' + item.sell;
-                    h4_buy_sell.appendChild(span_buy_sell);
-                    h4_buy_sell.classList.add('table-text');
-                    buy_sell.appendChild(h4_buy_sell);
-                    buy_sell.classList.add('align-middle');
-                    row.appendChild(buy_sell);
-
-                    
-
-                
-                    const  volume= document.createElement('td');
-                    const h4_volume = document.createElement('h4');
-                    const span_volume=document.createElement('span');
-                    span_volume.textContent=item.volume;
-                    h4_volume.appendChild(span_volume);
-                    h4_volume.classList.add('table-text');
-                    volume.appendChild(h4_volume);
-                    volume.classList.add('align-middle');
-                    row.appendChild(volume);
-                   
-                    tableBody.appendChild(row);
-                    const differencePercentage = previousValue
-                    ? (((item.last - previousValue) / previousValue) * 100).toFixed(2)
-                    : 0;
-                previousValue = item.last;
-
-                const buyPrice = item.buy;
-                const sellPrice = item.sell;
-                const savings = (sellPrice - buyPrice).toFixed(2);
-                savingsRupees += parseFloat(savings);
-
-                // Create elements for difference percentage and savings
-                const differencePercentageCell = document.createElement('td');
-                const h4_differencePercentage = document.createElement('h4');
-                h4_differencePercentage.textContent = `${differencePercentage}%`;
-                h4_differencePercentage.classList.add('table-text');
-                differencePercentageCell.appendChild(h4_differencePercentage);
-                differencePercentageCell.classList.add('align-middle');
-
-                const savingsCell = document.createElement('td');
-                const h4_savings = document.createElement('h4');
-                h4_savings.classList.add('table-text');
-
-                // Check if the difference is positive or negative and set the color accordingly
-                if (differencePercentage > 0) {
-                    h4_differencePercentage.style.color = 'cyan';
-                    h4_savings.style.color = 'cyan';
-                } else if (differencePercentage < 0) {
-                    h4_differencePercentage.style.color = 'red';
-                    h4_savings.style.color = 'red';
-                }
-
-                h4_savings.textContent = '₹ ' + parseFloat(savings).toFixed(2); // Display savings in rupees
-                savingsCell.appendChild(h4_savings);
-                savingsCell.classList.add('align-middle');
-
-                // Append the elements to the table row
-                row.appendChild(differencePercentageCell);
-                row.appendChild(savingsCell);
-
-                // Append the row to the table body
-                tableBody.appendChild(row);
-});
-            })              
-          .catch(error => {
-                console.error('Error fetching data:', error);
-            });
-    })
-</script>
-
 <body>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            function updateCountdownTimer() {
+                    const progressBar = document.querySelector(".CircularProgressbar-text");
+                    let countdown = 60;
+                    
+                    // Update the countdown timer every second
+                    const interval = setInterval(() => {
+                        progressBar.textContent = countdown;
+                        countdown--;
+                        
+                        if (countdown < 0) {
+                            clearInterval(interval); // Stop the countdown
+                            // Refresh the fetched data here
+                            fetchData();
+                            
+                            // Restart the countdown timer after refreshing data
+                            setTimeout(() => {
+                                updateCountdownTimer();
+                            }, 60000); // 60 seconds
+                        }
+                    }, 1000);
+                }
+            let previousValue = null;
+            let savingsRupees = 0;
+            const darkModeToggle = document.getElementById('darkModeToggle');
+      const body = document.body;
+    
+      darkModeToggle.addEventListener('change', () => {
+        if (darkModeToggle.checked) {
+          body.classList.add('dark-mode');
+          body.classList.remove('light-mode');
+        } else {
+          body.classList.add('light-mode');
+          body.classList.remove('dark-mode');
+        }
+      });
+      function fetchData() {
+            fetch('http://localhost:3001') // Replace '/api/data' with your actual backend API endpoint
+                .then(response => response.json())
+                .then(data => {
+                    // Process the fetched data
+                     
+                    console.log(data);
+                    data.data.sort((a, b) => {
+                    const differenceA = previousValue
+                        ? (((a.last - previousValue) / previousValue) * 100)
+                        : 0;
+                    const differenceB = previousValue
+                        ? (((b.last - previousValue) / previousValue) * 100)
+                        : 0;
+                    return differenceB - differenceA; // Sort in descending order
+                });
+    
+                    data.data.slice(0, 10).forEach((item, index) => {
+                        const tableBody = document.getElementsByClassName('table-body')[0];
+                        const a = document.createElement('a');
+                        a.setAttribute('value', item.base_unit);
+                        a.setAttribute('tabindex', '0');
+                        a.setAttribute('role', 'menuitem');
+                        a.setAttribute('href', '/');
+                        a.classList.add("dropdown-item");
+                        a.textContent = item.base_unit.toUpperCase();
+                        const nameDropDown = document.getElementById('nameDropDown');
+                        nameDropDown.appendChild(a);
+    
+                        const row=document.createElement('tr');
+    
+                        const s_no=document.createElement('td');
+                        const h4_s_no=document.createElement('h4');
+                        h4_s_no.classList.add("table-text");
+                        s_no.classList.add("align-middle");
+                        s_no.textContent=index+1;
+                        s_no.appendChild(h4_s_no);
+                        row.appendChild(s_no);
+    
+                        const span=document.createElement('span');
+                        const name = document.createElement('td');
+                        const h4_name=document.createElement('h4');
+                        span.textContent=item.name;
+                        h4_name.appendChild(span);
+                        h4_name.classList.add('table-text');
+                        name.appendChild(h4_name);
+                        name.classList.add('align-middle');
+                        row.appendChild(name);
+                        
+                        const last = document.createElement('td');
+                        const h4=document.createElement('h4');
+                        h4.textContent= '₹ ' + item.last;
+                        h4.classList.add('table-text');
+                        last.appendChild(h4);
+                        last.classList.add('align-middle');
+                        row.appendChild(last);
+                        
+                        const buy_sell = document.createElement('td');
+                        const h4_buy_sell = document.createElement('h4');
+                        const span_buy_sell=document.createElement('span');
+                        span_buy_sell.textContent='₹ ' + item.buy + ' / ₹ ' + item.sell;
+                        h4_buy_sell.appendChild(span_buy_sell);
+                        h4_buy_sell.classList.add('table-text');
+                        buy_sell.appendChild(h4_buy_sell);
+                        buy_sell.classList.add('align-middle');
+                        row.appendChild(buy_sell);
+    
+                        
+    
+                    
+                        const  volume= document.createElement('td');
+                        const h4_volume = document.createElement('h4');
+                        const span_volume=document.createElement('span');
+                        span_volume.textContent=item.volume;
+                        h4_volume.appendChild(span_volume);
+                        h4_volume.classList.add('table-text');
+                        volume.appendChild(h4_volume);
+                        volume.classList.add('align-middle');
+                        row.appendChild(volume);
+                       
+                        tableBody.appendChild(row);
+                        const differencePercentage = previousValue
+                        ? (((item.last - previousValue) / previousValue) * 100).toFixed(2)
+                        : 0;
+                    previousValue = item.last;
+    
+                    const buyPrice = item.buy;
+                    const sellPrice = item.sell;
+                    const savings = (sellPrice - buyPrice).toFixed(2);
+                    savingsRupees += parseFloat(savings);
+    
+                    // Create elements for difference percentage and savings
+                    const differencePercentageCell = document.createElement('td');
+                    const h4_differencePercentage = document.createElement('h4');
+                    h4_differencePercentage.textContent = `${differencePercentage}%`;
+                    h4_differencePercentage.classList.add('table-text');
+                    differencePercentageCell.appendChild(h4_differencePercentage);
+                    differencePercentageCell.classList.add('align-middle');
+    
+                    const savingsCell = document.createElement('td');
+                    const h4_savings = document.createElement('h4');
+                    h4_savings.classList.add('table-text');
+    
+                    // Check if the difference is positive or negative and set the color accordingly
+                    if (differencePercentage > 0) {
+                        h4_differencePercentage.style.color = 'cyan';
+                        h4_savings.style.color = 'cyan';
+                    } else if (differencePercentage < 0) {
+                        h4_differencePercentage.style.color = 'red';
+                        h4_savings.style.color = 'red';
+                    }
+    
+                    h4_savings.textContent = '₹ ' + parseFloat(savings).toFixed(2); // Display savings in rupees
+                    savingsCell.appendChild(h4_savings);
+                    savingsCell.classList.add('align-middle');
+    
+                    // Append the elements to the table row
+                    row.appendChild(differencePercentageCell);
+                    row.appendChild(savingsCell);
+    
+                    // Append the row to the table body
+                    tableBody.appendChild(row);
+                    })
+                })
+                          
+              .catch(error => {
+                    console.error('Error fetching data:', error);
+                });
+            }
+            fetchData();
+        updateCountdownTimer();
+            });
+            page();
+
+// Define the route handler for "/connect/telegram"
+page('/connect/telegram', () => {
+  // Display the specified content
+  const contentDiv = document.getElementById('telegramContent');
+  contentDiv.innerHTML = `
+    <h2>Connect <img src="data:image/png;base64,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"
+                                                class="telegram-logo" alt="Telegram-Logo"> Telegram</h2>
+    <h3>Add bot to your group</h3>
+    <p><strong>Manual:</strong></p>
+    <ol>
+      <li>Open the Telegram app.</li>
+      <li>Open the group you want to add the bot to.</li>
+      <li>Click on add members in group settings.</li>
+      <li>Search @HodlInfoBot and click it.</li>
+    </ol>
+    <p><strong>Automatic:</strong></p>
+    <p>Go to: <a href="https://t.me/HodlInfoBot?startgroup=true">https://t.me/HodlInfoBot?startgroup=true</a></p>
+    <h3>Chat with the bot</h3>
+    <p><strong>Manual:</strong></p>
+    <ol>
+      <li>Open the Telegram app.</li>
+      <li>Click on the new message button.</li>
+      <li>In the search bar, type HodlInfoBot.</li>
+      <li>Click on @HodlInfoBot.</li>
+    </ol>
+    <p><strong>Automatic:</strong></p>
+    <p>Go to: <a href="https://t.me/HodlInfoBot">https://t.me/HodlInfoBot</a></p>
+  `;
+});
+
+// Add a click event to the "Connect Telegram" button to trigger the routing
+const connectTelegramButton = document.getElementById('connectTelegramButton');
+connectTelegramButton.addEventListener('click', (event) => {
+  event.preventDefault(); // Prevent the default link behavior
+  page('/connect/telegram'); // Trigger the route change
+});
+    </script>
+    
     <div id="root">
         <div class="App">
             <div class="theme-dark">
@@ -226,7 +291,7 @@
                                     </div>
                                 </a>
                                 <div class="margin-10 d-inline-block"><label class="switch"><input type="checkbox"
-                                            checked checked id="darkModeToggle"><span class="slider round"></span></label></div>
+                                            checked id="darkModeToggle"><span class="slider round"></span></label></div>
                             </div>
                         </div>
                     </div>

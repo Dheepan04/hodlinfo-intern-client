@@ -299,10 +299,10 @@ input:checked+.slider:before {
     z-index:8
 }
 .dark-mode {
-    background-color:#191d28 ;
-    color: white;
+    background-color:#191d28 !important;
+    color: white !important;
   }
-  .light-mode {
-    background-color: white;
-    color: black;
+.light-mode {
+    background-color: white !important;
+    color: black !important;
   }
