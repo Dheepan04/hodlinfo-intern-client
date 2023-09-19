@@ -104,7 +104,7 @@
 
         const savingsCell = document.createElement('td');
         const h4_savings = document.createElement('h4');
-        h4_savings.textContent = '₹ ' + savings.toFixed(2); // Display savings in rupees
+        h4_savings.textContent = '₹ ' + parseFloat(savings).toFixed(2); // Display savings in rupees
         h4_savings.classList.add('table-text');
         savingsCell.appendChild(h4_savings);
         savingsCell.classList.add('align-middle');
