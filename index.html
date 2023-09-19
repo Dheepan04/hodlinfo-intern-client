@@ -12,6 +12,7 @@
 </head>
 <script>
     document.addEventListener('DOMContentLoaded', () => {
+        let previousValue = null;
         fetch('http://localhost:3001') // Replace '/api/data' with your actual backend API endpoint
             .then(response => response.json())
             .then(data => {
