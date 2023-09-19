@@ -70,6 +70,8 @@
                     buy_sell.classList.add('align-middle');
                     row.appendChild(buy_sell);
 
+                    
+
                 
                     const  volume= document.createElement('td');
                     const h4_volume = document.createElement('h4');
@@ -83,46 +85,47 @@
                    
                     tableBody.appendChild(row);
                     const differencePercentage = previousValue
-            ? (((item.last - previousValue) / previousValue) * 100).toFixed(2)
-            : 0;
-        previousValue = item.last;
+        ? (((item.last - previousValue) / previousValue) * 100).toFixed(2)
+        : 0;
+    previousValue = item.last;
 
-        // Calculate savings in rupees
-        const buyPrice = item.buy;
-        const sellPrice = item.sell;
-        const savings = (sellPrice - buyPrice).toFixed(2);
-        savingsRupees += parseFloat(savings);
+    // Calculate savings in rupees
+    const buyPrice = item.buy;
+    const sellPrice = item.sell;
+    const savings = (sellPrice - buyPrice).toFixed(2);
+    savingsRupees += parseFloat(savings);
 
-        // Add difference percentage and savings to the table row
-        const differencePercentageCell = document.createElement('td');
-        const h4_differencePercentage = document.createElement('h4');
-        h4_differencePercentage.textContent = `${differencePercentage}%`;
-        h4_differencePercentage.classList.add('table-text');
-        differencePercentageCell.appendChild(h4_differencePercentage);
-        differencePercentageCell.classList.add('align-middle');
-        row.appendChild(differencePercentageCell);
+    // Create table cells for difference percentage and savings
+    const differencePercentageCell = document.createElement('td');
+    const h4_differencePercentage = document.createElement('h4');
 
-        const savingsCell = document.createElement('td');
-        const h4_savings = document.createElement('h4');
-        h4_savings.textContent = '₹ ' + parseFloat(savings).toFixed(2); // Display savings in rupees
-        h4_savings.classList.add('table-text');
-        savingsCell.appendChild(h4_savings);
-        savingsCell.classList.add('align-middle');
-        row.appendChild(savingsCell);
+    const savingsCell = document.createElement('td');
+    const h4_savings = document.createElement('h4');
 
-        tableBody.appendChild(row);
-    });
+    if (differencePercentage > 0) {
+        // Positive difference percentage, set color to blue
+        h4_differencePercentage.style.color = 'blue';
+        h4_savings.style.color = 'blue';
+    } else if (differencePercentage < 0) {
+        // Negative difference percentage, set color to red
+        h4_differencePercentage.style.color = 'red';
+        h4_savings.style.color = 'red';
+    }
 
-    // Display total savings in rupees at the end of the table
-    const totalSavingsRow = document.createElement('tr');
-    const totalSavingsLabelCell = document.createElement('td');
-    const totalSavingsValueCell = document.createElement('td');
-    totalSavingsLabelCell.textContent = 'Total Savings:';
-    totalSavingsLabelCell.setAttribute('colspan', '4');
-    totalSavingsValueCell.textContent = `${savingsRupees.toFixed(2)} INR`;
-    totalSavingsRow.appendChild(totalSavingsLabelCell);
-    totalSavingsRow.appendChild(totalSavingsValueCell);
-    tableBody.appendChild(totalSavingsRow);
+    h4_differencePercentage.textContent = `${differencePercentage}%`;
+    h4_differencePercentage.classList.add('table-text');
+    differencePercentageCell.appendChild(h4_differencePercentage);
+    differencePercentageCell.classList.add('align-middle');
+    row.appendChild(differencePercentageCell);
+
+    h4_savings.textContent = '₹ ' + parseFloat(savings).toFixed(2); // Display savings in rupees
+    h4_savings.classList.add('table-text');
+    savingsCell.appendChild(h4_savings);
+    savingsCell.classList.add('align-middle');
+    row.appendChild(savingsCell);
+
+    tableBody.appendChild(row);
+});
 })
     })
                 
