@@ -13,6 +13,7 @@
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         let previousValue = null;
+        let savingsRupees = 0;
         fetch('http://localhost:3001') // Replace '/api/data' with your actual backend API endpoint
             .then(response => response.json())
             .then(data => {
@@ -86,8 +87,11 @@
             : 0;
         previousValue = item.last;
 
-        // Calculate savings
-        const savings = (item.sell - item.buy).toFixed(2);
+        // Calculate savings in rupees
+        const buyPrice = item.buy;
+        const sellPrice = item.sell;
+        const savings = (sellPrice - buyPrice).toFixed(2);
+        savingsRupees += parseFloat(savings);
 
         // Add difference percentage and savings to the table row
         const differencePercentageCell = document.createElement('td');
@@ -100,7 +104,7 @@
 
         const savingsCell = document.createElement('td');
         const h4_savings = document.createElement('h4');
-        h4_savings.textContent = savings;
+        h4_savings.textContent = `${savings} INR`; // Display savings in rupees
         h4_savings.classList.add('table-text');
         savingsCell.appendChild(h4_savings);
         savingsCell.classList.add('align-middle');
@@ -108,12 +112,24 @@
 
         tableBody.appendChild(row);
     });
-                });
-            })
+
+    // Display total savings in rupees at the end of the table
+    const totalSavingsRow = document.createElement('tr');
+    const totalSavingsLabelCell = document.createElement('td');
+    const totalSavingsValueCell = document.createElement('td');
+    totalSavingsLabelCell.textContent = 'Total Savings:';
+    totalSavingsLabelCell.setAttribute('colspan', '4');
+    totalSavingsValueCell.textContent = `${savingsRupees.toFixed(2)} INR`;
+    totalSavingsRow.appendChild(totalSavingsLabelCell);
+    totalSavingsRow.appendChild(totalSavingsValueCell);
+    tableBody.appendChild(totalSavingsRow);
+})
+    })
+                
             .catch(error => {
                 console.error('Error fetching data:', error);
             });
-    
+        
 </script>
 
 <body>
@@ -243,9 +259,12 @@
                                     <th>
                                         <h4><span class="pointer">Volume</span></h4>
                                     </th>
-                                    <!-- <th>
+                                    <th>
+                                        <h4><span class="pointer">Difference %</span></h4>
+                                    </th>
+                                    <th>
                                         <h4><span class="pointer">Savings</span></h4>
-                                    </th> -->
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody class="table-body">
