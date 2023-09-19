@@ -54,7 +54,7 @@
                     
                     const last = document.createElement('td');
                     const h4=document.createElement('h4');
-                    h4.textContent=item.last;
+                    h4.textContent= '₹ ' + item.last;
                     h4.classList.add('table-text');
                     last.appendChild(h4);
                     last.classList.add('align-middle');
@@ -63,7 +63,7 @@
                     const buy_sell = document.createElement('td');
                     const h4_buy_sell = document.createElement('h4');
                     const span_buy_sell=document.createElement('span');
-                    span_buy_sell.textContent=item.buy+' / '+item.sell;
+                    span_buy_sell.textContent='₹ ' + item.buy + ' / ₹ ' + item.sell;
                     h4_buy_sell.appendChild(span_buy_sell);
                     h4_buy_sell.classList.add('table-text');
                     buy_sell.appendChild(h4_buy_sell);
@@ -104,7 +104,7 @@
 
         const savingsCell = document.createElement('td');
         const h4_savings = document.createElement('h4');
-        h4_savings.textContent = `${savings} INR`; // Display savings in rupees
+        h4_savings.textContent = '₹ ' + savings.toFixed(2); // Display savings in rupees
         h4_savings.classList.add('table-text');
         savingsCell.appendChild(h4_savings);
         savingsCell.classList.add('align-middle');
