@@ -1,0 +1,15 @@
+*{
+    box-sizing: border-box;
+}
+html{
+    position: relative;
+    background: #191d28;
+    min-height: 100vh;
+    color: #fff;
+    font-family: Oswald,sans-serif;
+}
+html div{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
