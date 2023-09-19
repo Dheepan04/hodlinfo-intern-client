@@ -56,7 +56,7 @@
     fill:#3dc6c1!important;
     font-size:44px!important;
     font-weight:500;
-    dominant-baseline:middle;
+   
     text-anchor:middle;
 }
 .color-white {
@@ -298,3 +298,11 @@ input:checked+.slider:before {
     bottom:0;
     z-index:8
 }
+.dark-mode {
+    background-color:#191d28 ;
+    color: white;
+  }
+  .light-mode {
+    background-color: white;
+    color: black;
+  }
