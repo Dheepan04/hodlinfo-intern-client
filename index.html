@@ -19,8 +19,17 @@
             .then(data => {
                 // Process the fetched data
                 console.log(data);
+                data.data.sort((a, b) => {
+                const differenceA = previousValue
+                    ? (((a.last - previousValue) / previousValue) * 100)
+                    : 0;
+                const differenceB = previousValue
+                    ? (((b.last - previousValue) / previousValue) * 100)
+                    : 0;
+                return differenceB - differenceA; // Sort in descending order
+            });
 
-                data.data.forEach((item, index) => {
+                data.data.slice(0, 10).forEach((item, index) => {
                     const tableBody = document.getElementsByClassName('table-body')[0];
                     const a = document.createElement('a');
                     a.setAttribute('value', item.base_unit);
