@@ -80,12 +80,39 @@
                     row.appendChild(volume);
                    
                     tableBody.appendChild(row);
+                    const differencePercentage = previousValue
+            ? (((item.last - previousValue) / previousValue) * 100).toFixed(2)
+            : 0;
+        previousValue = item.last;
+
+        // Calculate savings
+        const savings = (item.sell - item.buy).toFixed(2);
+
+        // Add difference percentage and savings to the table row
+        const differencePercentageCell = document.createElement('td');
+        const h4_differencePercentage = document.createElement('h4');
+        h4_differencePercentage.textContent = `${differencePercentage}%`;
+        h4_differencePercentage.classList.add('table-text');
+        differencePercentageCell.appendChild(h4_differencePercentage);
+        differencePercentageCell.classList.add('align-middle');
+        row.appendChild(differencePercentageCell);
+
+        const savingsCell = document.createElement('td');
+        const h4_savings = document.createElement('h4');
+        h4_savings.textContent = savings;
+        h4_savings.classList.add('table-text');
+        savingsCell.appendChild(h4_savings);
+        savingsCell.classList.add('align-middle');
+        row.appendChild(savingsCell);
+
+        tableBody.appendChild(row);
+    });
                 });
             })
             .catch(error => {
                 console.error('Error fetching data:', error);
             });
-    })
+    
 </script>
 
 <body>
