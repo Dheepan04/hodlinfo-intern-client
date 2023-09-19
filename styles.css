@@ -239,9 +239,7 @@ input:checked+.slider:before {
     background-color: #2e3241;
     
 }
-/* .theme-dark .fiat-crypto-table tbody td:first-child{
-    border-radius: 10px 0 0 10px;
-} */
+
 .theme-dark .fiat-crypto-table td{
     background-color: #2e3241;
     color:#fff;
@@ -257,17 +255,11 @@ input:checked+.slider:before {
 .align-middle a{
     text-decoration: none;
 }
-/* .exchange-logo{
-    width: 24px;
-    height:24px;
-    border-radius: 50px;
-} */
+
 .exchange-name{
     margin:15px;
 }
-/* .color-red{
-    color:red;
-} */
+
 
 .theme-dark .footer{
     border-top:2px solid #2e3241;
@@ -306,3 +298,4 @@ input:checked+.slider:before {
     background-color: white !important;
     color: black !important;
   }
+  
